@@ -1,6 +1,7 @@
 package com.appointment_service.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,13 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "appointments")
+@Table(
+        name = "appointments",
+        indexes = {
+                @Index(name = "idx_doctor", columnList = "doctor_Id"),
+                @Index(name = "idx_patient", columnList = "patientId")
+        }
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,15 +25,19 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Doctor ID is required")
     @Column(nullable = false)
     private Long doctorId;
 
+    @NotNull(message = "Patient ID is required")
     @Column(nullable = false)
     private Long patientId;
 
+    @NotNull(message = "Appointment date is required")
     @Column(nullable = false)
     private LocalDateTime appointmentDate;
 
+    @NotNull(message = "Status is required")
     @Column(nullable = false)
     private String status;
 
@@ -39,6 +50,7 @@ public class Appointment {
     protected void onCreate()
     {
         this.createdDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
     }
 
     @PreUpdate

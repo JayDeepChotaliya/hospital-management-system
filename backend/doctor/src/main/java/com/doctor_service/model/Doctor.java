@@ -18,17 +18,22 @@ public class Doctor {
 
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String specialization;
+
     @Column(nullable = false)
     private String phone;
 
+    @Column(nullable = false)
     private int experience;
+
     private String qualification;
 
+    @Column(nullable = false)
     private String department;
 
 }

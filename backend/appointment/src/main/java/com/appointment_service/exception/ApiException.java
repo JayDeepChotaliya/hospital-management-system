@@ -1,4 +1,30 @@
 package com.appointment_service.exception;
 
-public class ApiException {
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
+@Getter
+public class ApiException extends RuntimeException{
+
+    private final HttpStatus status;
+    private final String errorCode;
+
+    public ApiException(String message, HttpStatus status, String errorCode)
+    {
+        super(message);
+        this.status = status == null ? HttpStatus.BAD_REQUEST : status;
+        this.errorCode = errorCode;
+
+    }
+
+    public ApiException(String message, HttpStatus status)
+    {
+        this(message,status,null);
+    }
+
+    public ApiException(String message)
+    {
+        this(message, HttpStatus.BAD_REQUEST, null);
+    }
+
 }

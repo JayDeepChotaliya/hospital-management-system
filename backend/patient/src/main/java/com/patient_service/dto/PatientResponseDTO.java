@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -13,11 +14,15 @@ public class PatientResponseDTO {
 
     private Long id;
     private String name;
-    private int age;
+    private Integer age;
     private String gender;
     private String phone;
     private String address;
     private String medicalHistory;
     private String disease;
     private LocalDate admittedDate;
+    private LocalDate dob;
+    private LocalDateTime createdAt;
+    private String createdByUsername;
+
 }
