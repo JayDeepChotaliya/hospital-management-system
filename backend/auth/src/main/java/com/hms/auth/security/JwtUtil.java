@@ -1,92 +1,121 @@
 package com.hms.auth.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.hms.auth.model.Role;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil
 {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
 
-    private Key key;
+    private final String secretRaw;
+    private final long expirationMs;
+    private Key signingKey;
+
+    public JwtUtil(@Value("${app.jwt.secret}" ) String secretRaw,
+                   @Value("${app.jwt.expiration-ms:3600000}") long expirationMs) {
+        this.secretRaw = secretRaw;
+        this.expirationMs = expirationMs;
+    }
 
     // Secret key application.properties se lete hain
-
-    public JwtUtil(@Value("${app.jwt.secret}") String secret)
+    @PostConstruct
+    private void init()
     {
-        System.out.println(this.getClass()+" ***** Encoding Key **** ");
-        this.key = Keys.hmacShaKeyFor(secret.getBytes());
-        System.out.println(this.getClass()+"    Generated Key is  = "+this.key);
+        // If secret is base64-encoded, decode it. Otherwise use raw bytes.
+        byte[] keyBytes = secretRaw.getBytes();
+        try{
+            keyBytes = java.util.Base64.getDecoder().decode(secretRaw);
+        }
+        catch (IllegalArgumentException e)
+        {
+            // not base64 — fall back to UTF-8 bytes
+            keyBytes = secretRaw.getBytes(StandardCharsets.UTF_8);
+        }
+        // Ensure key length is sufficient for HS256 (>= 32 bytes)
+        if(keyBytes.length < 32)
+        {
+            logger.warn("JWT secret is weak ({} bytes). Provide a 256-bit+ secret (base64 recommended).", keyBytes.length);
+
+        }
+        this.signingKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(String username)
+
+    public String generateToken(String username , Set<String> roles)
     {
-        System.out.println(this.getClass()+" ***** Generating  Token  **** ");
+        long now = System.currentTimeMillis();
 
-        long expiration = 1000 * 60 * 60;
-
-        return Jwts.builder()
+        JwtBuilder builder = Jwts.builder()
                 .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-    }
-    public Jws<Claims> parseToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+                .setIssuedAt(new Date(now))
+                .setExpiration(new Date(now + expirationMs))
+                .signWith(signingKey,SignatureAlgorithm.HS256);
+
+        if (roles != null && !roles.isEmpty()) {
+            builder.claim("roles", roles.stream().collect(Collectors.toSet()));
+        }
+        return builder.compact();
     }
 
-    public boolean validateToken(String token, String username)
+    public boolean validateToken(String token, UserDetails userDetails)
     {
-        String extractedUsername = extractUsername(token);
-        boolean isTokenValidate = extractedUsername.equals(username) && !isTokenExpired(token);
+        try
+        {
+            Claims claims = parseClaims(token);
+            String subject = claims.getSubject();
+            boolean notExpired = !claims.getExpiration().before(new Date());
+            return subject != null && subject.equals(userDetails.getUsername()) && notExpired;
 
-        System.out.println(this.getClass() + "isTokenValidate  == " +isTokenValidate );
-        return isTokenValidate;
+        }
+        catch (JwtException | IllegalArgumentException e) {
+            logger.debug("JWT validation failed: {}", e.getMessage());
+            return false;
+        }
 
-    }
-
-    public boolean isTokenExpired(String token)
-    {
-        boolean isTokenExpired = extractAllClaims(token).getExpiration().before(new Date());
-        System.out.println(this.getClass() + "isTokenExpired  == " +isTokenExpired );
-        return isTokenExpired;
     }
 
     public String extractUsername(String token)
     {
-        System.out.println(this.getClass() + " **** Extract Username ***");
-        String extractedUsername = extractAllClaims(token).getSubject();
-        System.out.println(this.getClass() + "Extracted Username = "+ extractedUsername);
-        return extractedUsername;
+        return parseClaims(token).getSubject();
+    }
+    public Jws<Claims> parseToken(String token) {
+        return Jwts.parserBuilder().setSigningKey(signingKey).build().parseClaimsJws(token);
     }
 
-    public Claims extractAllClaims(String token)
-    {
-        System.out.println(this.getClass()+" ***In extractAllClaims ***");
-        Claims claims = Jwts.parserBuilder()
-                            .setSigningKey(key)
-                            .build()
-                            .parseClaimsJws(token)
-                            .getBody();
-
-        System.out.println(this.getClass()+"  Claims = "+claims);
-        return claims;
+    public Claims parseClaims(String token) {
+        // this will throw appropriate JwtException (ExpiredJwtException, MalformedJwtException, etc.)
+        return Jwts.parserBuilder()
+                .setSigningKey(signingKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
-    public String extractRolesString(String token) {
-        Object r = parseToken(token).getBody().get("roles");
-        return r == null ? "" : r.toString();
+    public Set<String> extractRoles(String token) {
+        Object roles = parseClaims(token).get("roles");
+        if (roles == null) return java.util.Collections.emptySet();
+        if (roles instanceof java.util.Collection<?>) {
+            return ((java.util.Collection<?>) roles).stream().map(Object::toString).collect(Collectors.toSet());
+        }
+        return Set.of(roles.toString());
+    }
+
+    public long getExpirationMs() {
+        return expirationMs;
     }
 
 }

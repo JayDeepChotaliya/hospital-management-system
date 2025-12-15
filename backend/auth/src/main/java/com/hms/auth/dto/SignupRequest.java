@@ -1,17 +1,18 @@
-package com.hms.auth.DTO;
+package com.hms.auth.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class SignupRequest {
 
     @NotBlank
+    @Size(min = 3, max = 100)
     private String username;
 
     @NotBlank
+    @Size(min = 6, max = 100)
     private String password;
 
     @NotBlank

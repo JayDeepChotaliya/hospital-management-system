@@ -1,0 +1,4 @@
+package com.hms.gateway.filter;
+
+public class AuthGlobalFilter {
+}
