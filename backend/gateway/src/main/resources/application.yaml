@@ -1,0 +1,44 @@
+server:
+  port: 9000
+
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:4200,http://localhost:9000/api/v1/auth"
+            allowedMethods: "GET,POST,PUT,DELETE,OPTIONS"
+            allowedHeaders: "Origin,Content-Type,Accept,Authorization"
+            allowCredentials: true
+            maxAge: 3600
+      default-filters:
+        - AddResponseHeader=X-Gateway, HMS-Gateway
+      routes:
+        - id: auth
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/v1/auth/**
+
+        - id: patient
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/patients/**
+
+        - id: doctor
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/doctors/**
+
+        - id: appointment
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/v1/appointments/**
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+app:
+  jwt:
+    secret: 7qbq6zTyZ8bC3dA2wS7gN1mK9jF0hL4tUoP6iBvE3nG8xZaQrY7cW2fA
