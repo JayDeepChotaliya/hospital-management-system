@@ -1,0 +1,70 @@
+.page {
+  padding: 20px;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+h2 {
+  margin-bottom: 16px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* Error */
+.error {
+  padding: 12px;
+  background-color: #fdecea;
+  color: #b71c1c;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+/* Card */
+.card {
+  max-width: 600px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 6px;
+}
+
+/* Rows */
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.row label {
+  font-weight: 500;
+  color: #555;
+}
+
+.row span {
+  color: #333;
+}
+
+/* Actions */
+.actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.actions .btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  background-color: #1976d2;
+  color: #fff;
+  font-size: 14px;
+}
+
+.actions .btn:hover {
+  opacity: 0.9;
+}

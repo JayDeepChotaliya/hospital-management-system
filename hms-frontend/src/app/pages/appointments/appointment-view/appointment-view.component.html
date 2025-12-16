@@ -1,0 +1,58 @@
+<section class="page">
+  <h2>Appointment Details</h2>
+
+  <!-- Error -->
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <!-- 🔥 Async pipe handles timing -->
+  <ng-container *ngIf="appointment$ | async as appointment">
+    <div class="card">
+      <div class="row">
+        <label>Appointment ID</label>
+        <span>{{ appointment.id }}</span>
+      </div>
+
+      <div class="row">
+        <label>Doctor ID</label>
+        <span>{{ appointment.doctorId }}</span>
+      </div>
+
+      <div class="row">
+        <label>Patient ID</label>
+        <span>{{ appointment.patientId }}</span>
+      </div>
+
+      <div class="row">
+        <label>Appointment Date</label>
+        <span>{{ appointment.appointmentDate }}</span>
+      </div>
+
+      <div class="row">
+        <label>Status</label>
+        <span>{{ appointment.status }}</span>
+      </div>
+
+      <div class="row" *ngIf="appointment.reason">
+        <label>Reason</label>
+        <span>{{ appointment.reason }}</span>
+      </div>
+
+      <div class="row" *ngIf="appointment.createdDate">
+        <label>Created Date</label>
+        <span>{{ appointment.createdDate }}</span>
+      </div>
+
+      <div class="row" *ngIf="appointment.updatedDate">
+        <label>Last Updated</label>
+        <span>{{ appointment.updatedDate }}</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button class="btn" (click)="goBack()">Back</button>
+    </div>
+  </ng-container>
+</section>

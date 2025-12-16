@@ -1,0 +1,25 @@
+<section class="page">
+  <h2>Cancel Appointment</h2>
+
+  <!-- Warning message -->
+  <div class="warning">
+    <p>⚠️ Are you sure you want to cancel this appointment?</p>
+    <p>This action <strong>cannot be undone</strong>.</p>
+  </div>
+
+  <!-- Backend Error -->
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <!-- Actions -->
+  <div class="actions">
+    <button class="btn danger" (click)="confirmCancel()" [disabled]="loading">
+      {{ loading ? 'Cancelling...' : 'Yes, Cancel Appointment' }}
+    </button>
+
+    <button class="btn secondary" type="button" (click)="back()" [disabled]="loading">
+      Go Back
+    </button>
+  </div>
+</section>

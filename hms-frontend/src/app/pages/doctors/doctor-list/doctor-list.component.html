@@ -1,0 +1,55 @@
+<section class="page">
+  <!-- Header -->
+  <div class="page-header">
+    <h2>Doctors</h2>
+
+    <!-- Add Doctor (ADMIN only) -->
+    <button *ngIf="isAdmin" class="btn primary" routerLink="/app/doctors/add">+ Add Doctor</button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">Loading doctors...</div>
+
+  <!-- Error -->
+  <div *ngIf="error && !loading" class="error">
+    {{ error }}
+  </div>
+
+  <!-- 🔥 Async pipe -->
+  <ng-container *ngIf="doctors$ | async as doctors">
+    <table *ngIf="!loading && doctors.length > 0" class="doctor-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Specialization</th>
+          <th>Phone</th>
+          <th>Department</th>
+          <th *ngIf="isAdmin">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let d of doctors">
+          <td>{{ d.name }}</td>
+          <td>{{ d.email }}</td>
+          <td>{{ d.specialization }}</td>
+          <td>{{ d.phone }}</td>
+          <td>{{ d.department }}</td>
+
+          <!-- Actions -->
+          <td *ngIf="isAdmin" class="actions">
+            <button class="btn link" [routerLink]="['/app/doctors/view', d.id]">View</button>
+
+            <button class="btn link" [routerLink]="['/app/doctors/edit', d.id]">Edit</button>
+
+            <button class="btn danger" (click)="deleteDoctor(d.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Empty -->
+    <div *ngIf="!loading && doctors.length === 0" class="empty">No doctors found</div>
+  </ng-container>
+</section>

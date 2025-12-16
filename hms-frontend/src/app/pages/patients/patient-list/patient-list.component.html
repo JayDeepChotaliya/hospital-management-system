@@ -1,0 +1,67 @@
+<section class="page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h2>Patients</h2>
+
+    <!-- Add button (ADMIN only) -->
+    <button *ngIf="isAdmin" class="btn primary" routerLink="/app/patients/add">
+      + Add Patient
+    </button>
+  </div>
+
+  <!-- 🔄 Loading -->
+  <div *ngIf="loading" class="loading">Loading patients...</div>
+
+  <!-- ❌ Error -->
+  <div *ngIf="error && !loading" class="error">
+    {{ error }}
+  </div>
+
+  <!-- 📋 Data -->
+  <ng-container *ngIf="!loading && !error">
+    <ng-container *ngIf="patients$ | async as patients">
+      <!-- Empty state -->
+      <div *ngIf="patients.length === 0" class="empty">No patients found</div>
+
+      <!-- Table -->
+      <table *ngIf="patients.length > 0" class="patient-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Phone</th>
+            <th>Disease</th>
+            <th>Admitted Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let p of patients">
+            <td>{{ p.name }}</td>
+            <td>{{ p.gender }}</td>
+            <td>{{ p.phone || '-' }}</td>
+            <td>{{ p.disease || '-' }}</td>
+            <td>{{ p.admittedDate }}</td>
+
+            <!-- Actions -->
+            <td class="actions">
+              <!-- View -->
+              <button class="btn link" [routerLink]="['/app/patients/view', p.id]">View</button>
+
+              <!-- Edit (ADMIN only) -->
+              <button *ngIf="isAdmin" class="btn link" [routerLink]="['/app/patients/edit', p.id]">
+                Edit
+              </button>
+
+              <!-- Delete (ADMIN only) -->
+              <button class="btn danger" *ngIf="isAdmin && p.id" (click)="deletePatient(p.id!)">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+  </ng-container>
+</section>

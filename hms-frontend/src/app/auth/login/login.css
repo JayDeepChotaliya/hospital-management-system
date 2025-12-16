@@ -1,0 +1,5 @@
+.login-wrap { display:flex; justify-content:center; padding:48px 16px; }
+.login-card { width:100%; max-width:420px; padding:20px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+.full { width:100%; }
+.actions { display:flex; gap:12px; margin-top:12px; align-items:center; }
+.err { color:#b00020; margin-top:12px; }

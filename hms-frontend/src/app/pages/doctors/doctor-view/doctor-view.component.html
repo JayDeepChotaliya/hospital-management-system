@@ -1,0 +1,52 @@
+<section class="page">
+  <h2>Doctor Details</h2>
+
+  <!-- Error -->
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <!-- 🔥 Async pipe handles timing -->
+  <ng-container *ngIf="doctor$ | async as doctor">
+    <div class="card">
+      <div class="row">
+        <label>Name</label>
+        <span>{{ doctor.name }}</span>
+      </div>
+
+      <div class="row">
+        <label>Email</label>
+        <span>{{ doctor.email }}</span>
+      </div>
+
+      <div class="row">
+        <label>Specialization</label>
+        <span>{{ doctor.specialization }}</span>
+      </div>
+
+      <div class="row">
+        <label>Phone</label>
+        <span>{{ doctor.phone }}</span>
+      </div>
+
+      <div class="row">
+        <label>Experience</label>
+        <span>{{ doctor.experience }} years</span>
+      </div>
+
+      <div class="row">
+        <label>Qualification</label>
+        <span>{{ doctor.qualification || '-' }}</span>
+      </div>
+
+      <div class="row">
+        <label>Department</label>
+        <span>{{ doctor.department }}</span>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" (click)="goBack()">Back</button>
+      </div>
+    </div>
+  </ng-container>
+</section>

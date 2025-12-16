@@ -1,0 +1,68 @@
+.page {
+  padding: 20px;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+h2 {
+  margin-bottom: 16px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* Warning box */
+.warning {
+  max-width: 600px;
+  background: #fff3e0;
+  border-left: 4px solid #f57c00;
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.warning p {
+  margin: 4px 0;
+  color: #5d4037;
+}
+
+/* Error */
+.error {
+  max-width: 600px;
+  padding: 12px;
+  background-color: #fdecea;
+  color: #b71c1c;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+}
+
+/* Danger (Cancel) */
+.btn.danger {
+  background-color: #d32f2f;
+  color: #fff;
+}
+
+/* Secondary (Back) */
+.btn.secondary {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -1,0 +1,30 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer [mode]="(isSmall$ | async) ? 'over' : 'side'" [opened]="!(isSmall$ | async)">
+    <mat-toolbar color="primary">HMS</mat-toolbar>
+    <mat-nav-list>
+      <a
+        mat-list-item
+        *ngFor="let item of filteredMenu"
+        [routerLink]="item.path"
+        (click)="closeIfSmall(drawer)"
+      >
+        <mat-icon matListIcon>{{ item.icon }}</mat-icon>
+        <span matLine>{{ item.label }}</span>
+      </a>
+    </mat-nav-list>
+    <div style="padding: 12px">
+      <button mat-button (click)="logout()">Logout</button>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button mat-icon-button (click)="drawer.toggle()" *ngIf="isSmall$ | async">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Hospital Management System</span>
+    </mat-toolbar>
+    <main style="padding: 16px">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

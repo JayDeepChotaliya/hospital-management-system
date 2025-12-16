@@ -1,0 +1,73 @@
+<!-- src/app/pages/appointments/appointment-list/appointment-list.component.html -->
+
+<section class="page">
+  <!-- Header -->
+  <div class="page-header">
+    <h2>Appointments</h2>
+
+    <!-- Create button (PATIENT / ADMIN) -->
+    <button *ngIf="isPatient || isAdmin" class="btn primary" routerLink="/app/appointments/create">
+      + New Appointment
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">Loading appointments...</div>
+
+  <!-- Error -->
+  <div *ngIf="error && !loading" class="error">
+    {{ error }}
+  </div>
+
+  <!-- 🔥 Async Pipe -->
+  <ng-container *ngIf="appointments$ | async as appointments">
+    <!-- Table -->
+    <table *ngIf="!loading && appointments.length > 0" class="patient-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Doctor ID</th>
+          <th>Patient ID</th>
+          <th>Appointment Date</th>
+          <th>Status</th>
+          <th>Reason</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let a of appointments">
+          <td>{{ a.id }}</td>
+          <td>{{ a.doctorId }}</td>
+          <td>{{ a.patientId }}</td>
+          <td>{{ a.appointmentDate | date : 'dd-MM-yyyy HH:mm' }}</td>
+          <td>{{ a.status }}</td>
+          <td>{{ a.reason || '-' }}</td>
+
+          <!-- Actions -->
+          <td class="actions">
+            <!-- View (ALL roles) -->
+            <button class="btn link" [routerLink]="['/app/appointments/view', a.id]">View</button>
+
+            <!-- Update status (DOCTOR / ADMIN) -->
+            <button
+              class="btn link"
+              *ngIf="isDoctor || isAdmin"
+              [routerLink]="['/app/appointments/edit', a.id]"
+            >
+              Update Status
+            </button>
+
+            <!-- Cancel (PATIENT / ADMIN) -->
+            <button class="btn danger" *ngIf="isPatient || isAdmin" (click)="cancel(a.id!)">
+              Cancel
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Empty state -->
+    <div *ngIf="!loading && appointments.length === 0" class="empty">No appointments found</div>
+  </ng-container>
+</section>

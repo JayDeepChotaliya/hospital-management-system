@@ -1,0 +1,86 @@
+.page {
+  padding: 20px;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+h2 {
+  margin-bottom: 16px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* Loading & Error */
+.loading {
+  padding: 16px;
+  font-size: 15px;
+}
+
+.error {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #d32f2f;
+}
+
+/* Form */
+form {
+  max-width: 600px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 6px;
+}
+
+/* Label as form group */
+form label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+
+/* Inputs */
+input,
+select,
+textarea {
+  margin-top: 4px;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+}
+
+button.primary,
+button[type="submit"] {
+  background-color: #1976d2;
+  color: #fff;
+}
+
+button.link {
+  background: none;
+  color: #1976d2;
+  padding: 0;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

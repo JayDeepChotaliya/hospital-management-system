@@ -1,0 +1,38 @@
+<main class="login-wrap">
+  <mat-card class="login-card" aria-live="polite">
+    <h2>Login</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <mat-form-field class="full" appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" autocomplete="username" />
+        <mat-error *ngIf="form.get('username')?.touched && form.get('username')?.invalid"
+          >Username required</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field class="full" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          autocomplete="current-password"
+        />
+        <mat-error *ngIf="form.get('password')?.touched && form.get('password')?.invalid"
+          >Password required</mat-error
+        >
+      </mat-form-field>
+      <div class="actions">
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || loading">
+          <span *ngIf="!loading">Login</span>
+          <mat-progress-spinner
+            *ngIf="loading"
+            diameter="20"
+            mode="indeterminate"
+          ></mat-progress-spinner>
+        </button>
+        <button mat-button type="button" (click)="gotoSignup()" [disabled]="loading">Signup</button>
+      </div>
+      <p class="err" *ngIf="error">{{ error }}</p>
+    </form>
+  </mat-card>
+</main>

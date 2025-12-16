@@ -1,0 +1,40 @@
+<main class="signup-wrap">
+  <mat-card class="signup-card" aria-live="polite">
+    <h2>Signup</h2>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <mat-form-field class="full" appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" autocomplete="username" />
+        <mat-error *ngIf="form.get('username')?.touched && form.get('username')?.invalid">
+          Username (min 3 chars) required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" autocomplete="new-password" />
+        <mat-error *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
+          Password (min 6 chars) required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full" appearance="outline">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option *ngFor="let r of roles" [value]="r.value">{{ r.label }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('role')?.touched && form.get('role')?.invalid"
+          >Role required</mat-error
+        >
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || loading">
+          Signup
+        </button>
+      </div>
+
+      <p class="err" *ngIf="error">{{ error }}</p>
+    </form>
+  </mat-card>
+</main>

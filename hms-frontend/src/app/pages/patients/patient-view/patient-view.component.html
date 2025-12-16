@@ -1,0 +1,44 @@
+<section class="page">
+  <h2>Patient Details</h2>
+
+  <!-- ❌ Error -->
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <!-- 🔥 Data -->
+  <ng-container *ngIf="patient$ | async as patient">
+    <!-- ✅ Valid patient -->
+    <table *ngIf="patient" class="patient-table">
+      <tr>
+        <th>Name</th>
+        <td>{{ patient.name }}</td>
+      </tr>
+
+      <tr>
+        <th>Gender</th>
+        <td>{{ patient.gender }}</td>
+      </tr>
+
+      <tr>
+        <th>Phone</th>
+        <td>{{ patient.phone || '-' }}</td>
+      </tr>
+
+      <tr>
+        <th>Disease</th>
+        <td>{{ patient.disease || '-' }}</td>
+      </tr>
+
+      <tr>
+        <th>Admitted Date</th>
+        <td>{{ patient.admittedDate }}</td>
+      </tr>
+    </table>
+
+    <!-- ⚠️ No patient -->
+    <div *ngIf="!patient && !error" class="empty">Patient not found</div>
+
+    <button (click)="goBack()" class="btn link">Back</button>
+  </ng-container>
+</section>

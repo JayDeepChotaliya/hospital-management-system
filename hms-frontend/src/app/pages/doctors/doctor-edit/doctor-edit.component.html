@@ -1,0 +1,91 @@
+<section class="page">
+  <h2>Edit Doctor</h2>
+
+  <!-- Error while loading -->
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <!-- 🔥 Wait till doctor data loads -->
+  <ng-container *ngIf="doctor$ | async">
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <!-- Name -->
+      <div class="form-group">
+        <label>Name *</label>
+        <input type="text" formControlName="name" />
+        <div class="error" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
+          Name is required
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label>Email *</label>
+        <input type="email" formControlName="email" />
+        <div class="error" *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+          Enter a valid email
+        </div>
+      </div>
+
+      <!-- Specialization -->
+      <div class="form-group">
+        <label>Specialization *</label>
+        <input type="text" formControlName="specialization" />
+        <div
+          class="error"
+          *ngIf="form.get('specialization')?.touched && form.get('specialization')?.invalid"
+        >
+          Specialization is required
+        </div>
+      </div>
+
+      <!-- Phone -->
+      <div class="form-group">
+        <label>Phone *</label>
+        <input type="text" formControlName="phone" />
+        <div class="error" *ngIf="form.get('phone')?.touched && form.get('phone')?.invalid">
+          Phone must be 10 digits
+        </div>
+      </div>
+
+      <!-- Experience -->
+      <div class="form-group">
+        <label>Experience (Years) *</label>
+        <input type="number" formControlName="experience" />
+        <div
+          class="error"
+          *ngIf="form.get('experience')?.touched && form.get('experience')?.invalid"
+        >
+          Experience must be between 0 and 60
+        </div>
+      </div>
+
+      <!-- Qualification -->
+      <div class="form-group">
+        <label>Qualification</label>
+        <input type="text" formControlName="qualification" />
+      </div>
+
+      <!-- Department -->
+      <div class="form-group">
+        <label>Department *</label>
+        <input type="text" formControlName="department" />
+        <div
+          class="error"
+          *ngIf="form.get('department')?.touched && form.get('department')?.invalid"
+        >
+          Department is required
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button type="submit" [disabled]="form.invalid || loading">
+          {{ loading ? 'Updating...' : 'Update Doctor' }}
+        </button>
+
+        <button type="button" class="secondary" (click)="cancel()">Cancel</button>
+      </div>
+    </form>
+  </ng-container>
+</section>

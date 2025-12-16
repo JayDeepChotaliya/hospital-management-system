@@ -1,0 +1,54 @@
+<section class="page">
+  <h2>Edit Patient</h2>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="loading">Loading patient...</div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <!-- FORM -->
+  <form *ngIf="!loading" [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      Name
+      <input type="text" formControlName="name" />
+    </label>
+
+    <label>
+      Gender
+      <select formControlName="gender">
+        <option value="">Select</option>
+        <option value="MALE">Male</option>
+        <option value="FEMALE">Female</option>
+      </select>
+    </label>
+
+    <label>
+      Phone
+      <input type="text" formControlName="phone" />
+    </label>
+
+    <label>
+      Disease
+      <input type="text" formControlName="disease" />
+    </label>
+
+    <label>
+      Date of Birth
+      <input type="date" formControlName="dob" />
+    </label>
+
+    <label>
+      Admitted Date
+      <input type="date" formControlName="admittedDate" />
+    </label>
+
+    <div class="actions">
+      <button class="btn primary" type="submit" [disabled]="loading">Update</button>
+
+      <button class="btn link" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</section>

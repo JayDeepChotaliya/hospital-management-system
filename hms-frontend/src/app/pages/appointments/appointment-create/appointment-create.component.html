@@ -1,0 +1,56 @@
+<section class="page">
+  <h2>Create Appointment</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <!-- Doctor ID -->
+    <div class="form-group">
+      <label>Doctor ID *</label>
+      <input type="number" formControlName="doctorId" placeholder="Enter Doctor ID" />
+      <div class="error" *ngIf="form.get('doctorId')?.touched && form.get('doctorId')?.invalid">
+        Doctor ID is required
+      </div>
+    </div>
+
+    <!-- Patient ID -->
+    <div class="form-group">
+      <label>Patient ID *</label>
+      <input type="number" formControlName="patientId" placeholder="Enter Patient ID" />
+      <div class="error" *ngIf="form.get('patientId')?.touched && form.get('patientId')?.invalid">
+        Patient ID is required
+      </div>
+    </div>
+
+    <!-- Appointment Date & Time -->
+    <div class="form-group">
+      <label>Appointment Date & Time *</label>
+      <input type="datetime-local" formControlName="appointmentDate" />
+      <div
+        class="error"
+        *ngIf="form.get('appointmentDate')?.touched && form.get('appointmentDate')?.invalid"
+      >
+        Appointment date must be in the future
+      </div>
+    </div>
+
+    <!-- Reason -->
+    <div class="form-group">
+      <label>Reason</label>
+      <textarea formControlName="reason" rows="3" placeholder="Optional reason (max 500 chars)">
+      </textarea>
+    </div>
+
+    <!-- Backend Error -->
+    <div class="error" *ngIf="error">
+      {{ error }}
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button type="submit" [disabled]="form.invalid || loading">
+        {{ loading ? 'Saving...' : 'Create Appointment' }}
+      </button>
+
+      <button type="button" class="secondary" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</section>
