@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +25,7 @@ public class AuthController
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
     private final AuthService authService;
 
-    // 🔹 Signup API
+    //  Signup API
     @PostMapping(value = "/signup" , consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupRequest signupRequest) {
         log.info("Signup request for {}", signupRequest.getUsername());
@@ -46,3 +45,4 @@ public class AuthController
     }
 
 }
+    

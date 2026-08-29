@@ -53,7 +53,7 @@ public class AppointmentController
 
     // Get all (ADMIN)
     @GetMapping(produces = "application/json")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     public ResponseEntity<List<AppointmentResponseDTO>> getAll() {
         logger.info("[GET ALL] by={}", currentUsername());
         return ResponseEntity.ok(service.getAll());

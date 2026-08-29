@@ -37,7 +37,7 @@ public class PatientController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     public ResponseEntity<List<PatientResponseDTO>> all()
     {
         log.info("Get all patients");
@@ -45,7 +45,7 @@ public class PatientController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
     public ResponseEntity<PatientResponseDTO> one(@PathVariable Long id)
     {
         log.info("Get patient id={}", id);
